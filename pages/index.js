@@ -10,7 +10,15 @@ const photos = importAll(
 ).reverse();
 
 const imgElements = photos.map((photo) => {
-  return <Image src={photo.src} className="w-64" width="300" height="300" />;
+  return (
+    <Image
+      src={photo.src}
+      className="w-64"
+      width="300"
+      height="300"
+      key={photo.id}
+    />
+  );
 });
 
 const feed = new rss({
