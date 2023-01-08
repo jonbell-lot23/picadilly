@@ -18,7 +18,7 @@ const feed = new rss({
 photos.forEach((photo) => {
   const item = {
     title: photo.src,
-    description: photo.src,
+    description: `<img src="http://localhost:3001${photo.src}" />`,
     url: photo.src, // Link to the photo
   };
   feed.item(item);
