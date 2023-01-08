@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import rss from "rss";
-const url = require("url");
-const hostname = url.parse(req.headers.host).hostname;
 
 const importAll = (context) =>
   context.keys().map((key) => context(key).default);
@@ -20,7 +18,7 @@ const feed = new rss({
 photos.forEach((photo) => {
   const item = {
     title: photo.src,
-    description: `<img src="http://${hostname}${photo.src}" />`,
+    description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" />`,
     url: photo.src, // Link to the photo
   };
   feed.item(item);
