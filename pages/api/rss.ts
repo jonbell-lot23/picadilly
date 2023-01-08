@@ -5,14 +5,14 @@ const importAll = (context) =>
   context.keys().map((key) => context(key).default);
 const photos = importAll(
   require.context("../../public/gallery/", false, /\.png$/)
-).reverse();
+);
 
 console.log(photos);
 
 const feed = new rss({
   title: "Picadilly",
-  feed_url: "http://example.com/rss.xml",
-  site_url: "http://example.com",
+  feed_url: "http://picadilly.vercel.app/api/rss",
+  site_url: "http://picadilly.vercel.app",
 });
 
 photos.forEach((photo) => {
