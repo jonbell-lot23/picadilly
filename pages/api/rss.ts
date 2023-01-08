@@ -7,6 +7,8 @@ const photos = importAll(
   require.context("../../public/gallery/", false, /\.png$/)
 ).reverse();
 
+console.log(photos);
+
 const feed = new rss({
   title: "Picadilly",
   feed_url: "http://example.com/rss.xml",
@@ -14,11 +16,13 @@ const feed = new rss({
 });
 
 photos.forEach((photo) => {
-  feed.item({
+  const item = {
     title: photo.src,
     description: photo.src,
     url: photo.src, // Link to the photo
-  });
+  };
+  feed.item(item);
+  console.log(item);
 });
 
 const xml = feed.xml();
