@@ -15,15 +15,31 @@ const feed = new rss({
   site_url: "http://picadilly.vercel.app",
 });
 
+const parseFilename = (filename) => {
+  const dateRegex = /\[(\d{4}-\d{2}-\d{2})\]/; // matches [2023-02-01] at the beginning of the string
+  const filenameRegex = /\[(.*?)\]\s*(.*?)\./; // matches everything between the square brackets and the first dot
+  const dateMatch = filename.match(dateRegex);
+  console.log("dateMatch", dateMatch);
+  const filenameMatch = filename.match(filenameRegex);
+  const date = dateMatch ? dateMatch[1] : null;
+  const parsedFilename = filenameMatch ? filenameMatch[2] : filename;
+  return { date, filename: parsedFilename };
+};
+
+
+
 photos.forEach((photo) => {
+  const parsedFilename = parseFilename(photo.src);
   const item = {
-    title: photo.src,
-    description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" />`,
-    url: photo.src, // Link to the photo
+    title: parsedFilename.filename,
+    description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" alt="${parsedFilename.filename}" />`,
+    url: photo.src,
+    date: parsedFilename.date
   };
   feed.item(item);
   console.log(item);
 });
+
 
 const xml = feed.xml();
 
