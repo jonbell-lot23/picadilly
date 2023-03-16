@@ -26,20 +26,17 @@ const parseFilename = (filename) => {
   return { date, filename: parsedFilename };
 };
 
-
-
 photos.forEach((photo) => {
   const parsedFilename = parseFilename(photo.src);
   const item = {
     title: parsedFilename.filename,
     description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" alt="${parsedFilename.filename}" />`,
-    url: photo.src,
-    date: parsedFilename.date
+    url: `http://picadilly-jonbell-lot23.vercel.app${photo.src}`,
+    date: parsedFilename.date,
   };
   feed.item(item);
   console.log(item);
 });
-
 
 const xml = feed.xml();
 
