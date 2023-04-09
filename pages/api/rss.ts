@@ -16,8 +16,8 @@ const feed = new rss({
 });
 
 const parseFilename = (filename) => {
-  const dateRegex = /\[(\d{4}-\d{2}-\d{2})\]/; // matches [2023-02-01] at the beginning of the string
-  const filenameRegex = /\[(.*?)\]\s*(.*?)\./; // matches everything between the square brackets and the first dot
+  const dateRegex = /\[(\d{4}-\d{2}-\d{2})\]/;
+  const filenameRegex = /\[(.*?)\]\s*(.*?)\./;
   const dateMatch = filename.match(dateRegex);
   console.log("dateMatch", dateMatch);
   const filenameMatch = filename.match(filenameRegex);
@@ -26,17 +26,34 @@ const parseFilename = (filename) => {
   return { date, filename: parsedFilename };
 };
 
-photos.forEach((photo) => {
-  const parsedFilename = parseFilename(photo.src);
-  const item = {
-    title: parsedFilename.filename,
-    description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" alt="${parsedFilename.filename}" />`,
-    url: `http://picadilly-jonbell-lot23.vercel.app${photo.src}`,
-    date: parsedFilename.date,
-  };
-  feed.item(item);
-  console.log(item);
-});
+photos
+  .map((photo) => {
+    const parsedFilename = parseFilename(photo.src);
+    return {
+      src: photo.src,
+      date: parsedFilename.date,
+      filename: parsedFilename.filename,
+    };
+  })
+  .sort((a, b) => {
+    if (a.date > b.date) {
+      return -1;
+    } else if (a.date < b.date) {
+      return 1;
+    } else {
+      return 0;
+    }
+  })
+  .forEach((photo) => {
+    const item = {
+      title: photo.filename,
+      description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" alt="${photo.filename}" />`,
+      url: `http://picadilly-jonbell-lot23.vercel.app${photo.src}`,
+      date: photo.date,
+    };
+    feed.item(item);
+    console.log(item);
+  });
 
 const xml = feed.xml();
 
