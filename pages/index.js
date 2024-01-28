@@ -1,6 +1,5 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import PhotoAlbum from "react-photo-album";
 
 const importAll = (context) => {
   return context.keys().map((key) => {
@@ -27,18 +26,30 @@ export default function Home() {
         <title>Picadilly</title>
       </Head>
 
-      <PhotoAlbum
-        layout="masonry"
-        photos={photos.map((photo) => ({
-          ...photo,
-          src: photo.src.replace("/_next/static/media/", "/"),
-        }))}
-        columns={(containerWidth) => {
-          if (containerWidth < 500) return 2;
-          if (containerWidth < 900) return 3;
-          return 4;
-        }}
-      />
+      <div className={styles.photoGrid}>
+        {photos.map((photo, index) => {
+          if (
+            typeof photo.src === "object" &&
+            photo.src !== null &&
+            typeof photo.src.src === "string"
+          ) {
+            return (
+              <img
+                key={index}
+                src={photo.src.src} // Use the src directly
+                alt={`Gallery image ${index + 1}`}
+                className={styles.photo}
+              />
+            );
+          } else {
+            console.log(
+              `Unexpected photo.src type at index ${index}:`,
+              photo.src
+            );
+            return null;
+          }
+        })}
+      </div>
     </div>
   );
 }

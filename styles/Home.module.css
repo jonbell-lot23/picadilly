@@ -12,6 +12,10 @@
   align-items: center;
 }
 
+.photo {
+  width: 100px;
+  float: left;
+}
 .footer {
   display: flex;
   flex: 1;
