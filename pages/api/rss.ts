@@ -26,6 +26,8 @@ const parseFilename = (filename) => {
   return { date, filename: parsedFilename };
 };
 
+let previousFilename = '';
+
 photos
   .map((photo) => {
     const parsedFilename = parseFilename(photo.src);
@@ -45,14 +47,17 @@ photos
     }
   })
   .forEach((photo) => {
-    const item = {
-      title: photo.filename,
-      description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" alt="${photo.filename}" />`,
-      url: `http://picadilly-jonbell-lot23.vercel.app${photo.src}`,
-      date: photo.date,
-    };
-    feed.item(item);
-    console.log(item);
+    if (photo.filename !== previousFilename) {
+      const item = {
+        title: photo.filename,
+        description: `<img src="http://picadilly-jonbell-lot23.vercel.app${photo.src}" alt="${photo.filename}" />`,
+        url: `http://picadilly-jonbell-lot23.vercel.app${photo.src}`,
+        date: photo.date,
+      };
+      feed.item(item);
+      console.log(item);
+      previousFilename = photo.filename;
+    }
   });
 
 const xml = feed.xml();
